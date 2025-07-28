@@ -1,0 +1,16 @@
+{
+  "name": "alidns.com",
+  "description": "Aliyun DNS (alidns.com) provider for ddns-scripts",
+  "options": [
+    {"name": "username", "help": "Aliyun AccessKey ID"},
+    {"name": "password", "help": "Aliyun AccessKey Secret"},
+    {"name": "domain", "help": "Domain to update"},
+    {"name": "record_id", "help": "Optional: RecordId for advanced use"},
+    {"name": "ttl", "help": "TTL for DNS record"},
+    {"name": "use_ipv6", "help": "Set to 1 for AAAA record (IPv6)"},
+    {"name": "ip_source", "help": "IP source: web, interface, etc."},
+    {"name": "force_interval", "help": "Force update interval (hours)"},
+    {"name": "retry_interval", "help": "Retry interval (minutes)"},
+    {"name": "verbose", "help": "Verbosity level (0-2)"}
+  ]
+} 
