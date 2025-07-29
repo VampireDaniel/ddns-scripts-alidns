@@ -1,18 +1,17 @@
 # Test OpenWrt ddns-scripts-alidns in Docker on macOS
 
-This guide shows how to build and test the OpenWrt ddns-scripts-alidns extension using Docker on macOS.  
-本指南介绍如何在 macOS 上用 Docker 编译和测试 OpenWrt ddns-scripts-alidns 扩展。
+This guide shows how to build and test the OpenWrt ddns-scripts-alidns extension using Docker on macOS.
 
 ---
 
-## 1. Prerequisites 先决条件
-- [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop) 已安装
-- 已有本项目源码目录（`ddns-scripts-alidns`）
+## 1. Prerequisites
+- [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop) installed
+- Project source code directory (`ddns-scripts-alidns`) available
 
 ---
 
-## 2. Create Dockerfile 新建 Dockerfile
-在项目根目录新建 `Dockerfile`，内容如下（以 x86_64 为例）：
+## 2. Create Dockerfile
+Create a `Dockerfile` in your project root with the following content (for x86_64 target as example):
 
 ```Dockerfile
 FROM debian:stable-slim
@@ -35,7 +34,7 @@ WORKDIR /build/sdk
 
 ---
 
-## 3. Build Docker Image 构建镜像
+## 3. Build Docker Image
 
 ```sh
 docker build -t openwrt-sdk .
@@ -43,7 +42,7 @@ docker build -t openwrt-sdk .
 
 ---
 
-## 4. Start Container and Mount Your Package 启动容器并挂载包目录
+## 4. Start Container and Mount Your Package
 
 ```sh
 docker run -it --rm -v "$PWD/ddns-scripts-alidns":/build/sdk/package/ddns-scripts-alidns openwrt-sdk /bin/bash
@@ -51,24 +50,24 @@ docker run -it --rm -v "$PWD/ddns-scripts-alidns":/build/sdk/package/ddns-script
 
 ---
 
-## 5. Build Your Package in the Container 容器内编译包
+## 5. Build Your Package in the Container
 
 ```sh
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 make menuconfig
-# 选择 Network -> ddns-scripts-alidns，保存退出
+# Select Network -> ddns-scripts-alidns, save and exit
 make package/ddns-scripts-alidns/compile V=s
 ```
 
-编译好的 `.ipk` 包会在 `/build/sdk/bin/packages/x86_64/base/`（或类似目录）。
+The compiled `.ipk` package will be in `/build/sdk/bin/packages/x86_64/base/` (or similar directory).
 
 ---
 
-## 6. Copy the .ipk Out and Install on Your Router 拷贝并安装到路由器
+## 6. Copy the .ipk Out and Install on Your Router
 
 ```sh
-# 在容器外执行
+# Execute outside the container
 scp ddns-scripts-alidns_*.ipk root@<router_ip>:/tmp/
 ssh root@<router_ip>
 opkg install /tmp/ddns-scripts-alidns_*.ipk
@@ -76,16 +75,16 @@ opkg install /tmp/ddns-scripts-alidns_*.ipk
 
 ---
 
-## 7. Clean Up 清理
-退出容器后，Docker 镜像和容器可用 `docker rm`、`docker rmi` 清理。
+## 7. Clean Up
+After exiting the container, you can clean up Docker images and containers using `docker rm`, `docker rmi`.
 
 ---
 
-## 8. Notes 注意事项
-- 可根据实际 OpenWrt 目标架构修改 Dockerfile 里的 SDK 下载链接。
-- 推荐在 Linux 下编译，macOS 下用 Docker 可避免兼容性问题。
-- 编译时间较长，耐心等待。
+## 8. Notes
+- You can modify the SDK download link in the Dockerfile according to your actual OpenWrt target architecture.
+- It's recommended to compile on Linux, using Docker on macOS can avoid compatibility issues.
+- Compilation time is long, please be patient.
 
 ---
 
-如有问题请随时联系！ 
+Contact us if you have any questions! 
